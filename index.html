@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Smart Irrigation Monitoring</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <header>
@@ -14,25 +14,41 @@
 
   <main>
     <section class="grid">
-      <div class="card">
+      <div class="card" id="moisture-card" title="Soil moisture percentage. Ideal range: 40-70%">
         <h2>🌍 Soil Moisture</h2>
         <p><span id="moisture">--</span>%</p>
       </div>
 
-      <div class="card">
+      <div class="card" id="rain-card" title="Is rain expected soon?">
         <h2>🌧️ Rain Forecast</h2>
         <p><span id="rain">--</span></p>
       </div>
 
-      <div class="card">
+      <div class="card" id="temp-card" title="Current temperature in °C">
         <h2>🌡️ Temperature</h2>
         <p><span id="temp">--</span> °C</p>
       </div>
 
-      <div class="card">
-        <h2>💧 Irrigation Status</h2>
+      <div class="card" id="humidity-card" title="Relative humidity percentage">
+        <h2>💧 Humidity</h2>
+        <p><span id="humidity">--</span>%</p>
+      </div>
+
+      <div class="card" id="ph-card" title="Soil pH level (ideal: 6.0 - 7.5)">
+        <h2>🧪 Soil pH</h2>
+        <p><span id="ph">--</span></p>
+      </div>
+      <label class="switch">
+  <input type="checkbox" id="dark-mode-toggle" />
+  <span class="slider round"></span>
+  Dark Mode
+</label>
+
+      <div class="card" id="status-card" title="Current irrigation status">
+        <h2>💦 Irrigation Status</h2>
         <p id="status">--</p>
       </div>
+      
     </section>
 
     <section>
@@ -40,16 +56,21 @@
       <div class="card analysis">
         <p><b>Decision:</b> <span id="decision">Waiting for data...</span></p>
         <p><b>Condition:</b> <span id="condition">--</span></p>
+        <p><b>Last Irrigation:</b> <span id="last-irrigation">Never</span></p>
       </div>
     </section>
 
     <div class="center">
       <button onclick="simulate()">🔄 Refresh Data</button>
+      <label>
+        <input type="checkbox" id="auto-refresh" />
+        Auto-refresh every 10 seconds
+      </label>
     </div>
   </main>
 
   <footer>
-    <p> AI-Enhanced Water Optimization</p>
+    <p>AI-Enhanced Water Optimization</p>
   </footer>
 
   <script src="script.js"></script>
