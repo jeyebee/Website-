@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Irrigation Monitoring</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>🌱 Smart Irrigation Monitoring Dashboard</h1>
+    <p>AI-based system for tracking soil, weather, and plant conditions</p>
+  </header>
+
+  <main>
+    <section class="grid">
+      <div class="card">
+        <h2>🌍 Soil Moisture</h2>
+        <p><span id="moisture">--</span>%</p>
+      </div>
+
+      <div class="card">
+        <h2>🌧️ Rain Forecast</h2>
+        <p><span id="rain">--</span></p>
+      </div>
+
+      <div class="card">
+        <h2>🌡️ Temperature</h2>
+        <p><span id="temp">--</span> °C</p>
+      </div>
+
+      <div class="card">
+        <h2>💧 Irrigation Status</h2>
+        <p id="status">--</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>📊 System Analysis</h2>
+      <div class="card analysis">
+        <p><b>Decision:</b> <span id="decision">Waiting for data...</span></p>
+        <p><b>Condition:</b> <span id="condition">--</span></p>
+      </div>
+    </section>
+
+    <div class="center">
+      <button onclick="simulate()">🔄 Refresh Data</button>
+    </div>
+  </main>
+
+  <footer>
+    <p> AI-Enhanced Water Optimization</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
