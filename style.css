@@ -173,3 +173,79 @@ input:checked + .slider {
 input:checked + .slider::before {
   transform: translateX(20px);
 }
+
+.plant-info-container {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 2rem;
+  gap: 2rem;
+}
+
+.plant-info {
+  background: #e6fffa;
+  border-radius: 12px;
+  padding: 1rem 2rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  width: 200px;
+  text-align: center;
+}
+
+body.dark-mode .plant-info {
+  background: #134e4a;
+  color: #a5f3fc;
+  box-shadow: 0 4px 10px rgba(165, 243, 252, 0.3);
+}
+/* Menu Bar Styles */
+.menu-bar {
+  margin-top: 1rem;
+  background-color: rgba(42, 157, 143, 0.85);
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.menu-bar ul {
+  list-style: none;
+  margin: 0;
+  padding: 0.5rem 1rem;
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.menu-bar ul li a {
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 0.5rem 0;
+  transition: color 0.3s ease;
+}
+
+.menu-bar ul li a:hover,
+.menu-bar ul li a:focus {
+  color: #a5f3fc;
+  outline: none;
+}
+
+/* Dark mode menu bar */
+body.dark-mode .menu-bar {
+  background-color: rgba(165, 243, 252, 0.15);
+  box-shadow: 0 2px 6px rgba(255,255,255,0.1);
+}
+
+body.dark-mode .menu-bar ul li a {
+  color: #a5f3fc;
+}
+
+body.dark-mode .menu-bar ul li a:hover,
+body.dark-mode .menu-bar ul li a:focus {
+  color: #38bdf8;
+}
+
+/* Responsive: stack menu items on small screens */
+@media (max-width: 600px) {
+  .menu-bar ul {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
