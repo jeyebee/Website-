@@ -5,10 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Smart Irrigation Monitoring</title>
   <link rel="stylesheet" href="style.css" />
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
   <header>
     <h1>🌱 Smart Irrigation Monitoring Dashboard</h1>
+    <nav class="menu-bar">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="Sub.html">Irrigation System</a></li>
+      </ul>
+    </nav>
     <p>AI-based system for tracking soil, weather, and plant conditions</p>
   </header>
 
@@ -39,16 +47,15 @@
         <p><span id="ph">--</span></p>
       </div>
       <label class="switch">
-  <input type="checkbox" id="dark-mode-toggle" />
-  <span class="slider round"></span>
-  Dark Mode
-</label>
+        <input type="checkbox" id="dark-mode-toggle" />
+        <span class="slider round"></span>
+        Dark Mode
+      </label>
 
       <div class="card" id="status-card" title="Current irrigation status">
         <h2>💦 Irrigation Status</h2>
         <p id="status">--</p>
       </div>
-      
     </section>
 
     <section>
@@ -57,6 +64,25 @@
         <p><b>Decision:</b> <span id="decision">Waiting for data...</span></p>
         <p><b>Condition:</b> <span id="condition">--</span></p>
         <p><b>Last Irrigation:</b> <span id="last-irrigation">Never</span></p>
+      </div>
+    </section>
+
+    <!-- Charts Section -->
+    <section>
+      <h2>📈 Data Visualizations</h2>
+      <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+        <div class="card">
+          <h3>Soil Moisture Distribution (Pie Chart)</h3>
+          <canvas id="pieChart" aria-label="Soil Moisture Distribution Pie Chart" role="img"></canvas>
+        </div>
+        <div class="card">
+          <h3>Weather Parameters (Bar Chart)</h3>
+          <canvas id="barChart" aria-label="Weather Parameters Bar Chart" role="img"></canvas>
+        </div>
+        <div class="card">
+          <h3>Soil Moisture Over Time (Line Chart)</h3>
+          <canvas id="lineChart" aria-label="Soil Moisture Over Time Line Chart" role="img"></canvas>
+        </div>
       </div>
     </section>
 
