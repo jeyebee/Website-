@@ -1,1 +1,197 @@
-n
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Irrigation System - Plant Monitor</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* Menu bar styles consistent with index.html */
+    .menu-bar {
+      margin-top: 1rem;
+      background-color: rgba(42, 157, 143, 0.85);
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    .menu-bar ul {
+      list-style: none;
+      margin: 0;
+      padding: 0.5rem 1rem;
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+    }
+    .menu-bar ul li a {
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1rem;
+      padding: 0.5rem 0;
+      transition: color 0.3s ease;
+    }
+    .menu-bar ul li a:hover,
+    .menu-bar ul li a:focus {
+      color: #a5f3fc;
+      outline: none;
+    }
+
+    main {
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+
+    h1 {
+      text-align: center;
+      color: #2a9d8f;
+    }
+
+    .plants-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .plant-card {
+      background: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      text-align: center;
+      transition: background-color 0.3s ease;
+    }
+
+    .plant-card h2 {
+      margin-bottom: 0.5rem;
+      color: #2a9d8f;
+    }
+
+    .plant-info {
+      font-size: 1.1rem;
+      margin: 0.5rem 0;
+    }
+
+    .water-btn {
+      margin-top: 1rem;
+      padding: 10px 20px;
+      background: #2a9d8f;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background-color 0.3s ease;
+    }
+
+    .water-btn:hover {
+      background: #21867a;
+    }
+
+    /* Dark mode overrides */
+    body.dark-mode .plant-card {
+      background: #1e293b;
+      box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
+      color: #e0e0e0;
+    }
+
+    body.dark-mode .plant-card h2 {
+      color: #38bdf8;
+    }
+
+    body.dark-mode .water-btn {
+      background: #0f766e;
+      color: #a5f3fc;
+    }
+
+    body.dark-mode .water-btn:hover {
+      background: #115e59;
+    }
+    </style>
+</head>
+<body>
+  <header>
+    <h1>💧 Irrigation System Control</h1>
+    <nav class="menu-bar">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="Sub.html" aria-current="page">Irrigation System</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <div class="plants-grid" id="plantsGrid">
+      <!-- Plant cards will be generated here -->
+    </div>
+  </main>
+
+  <script>
+    // Plant data array
+    const plants = [
+      { id: 1, name: "Tomato", soilMoisture: 50, soilPH: 6.5, lastWatered: Date.now() - 30 * 60000 },
+      { id: 2, name: "Lettuce", soilMoisture: 45, soilPH: 6.8, lastWatered: Date.now() - 45 * 60000 },
+      { id: 3, name: "Potato", soilMoisture: 55, soilPH: 6.0, lastWatered: Date.now() - 60 * 60000 },
+      { id: 4, name: "Cucumber", soilMoisture: 40, soilPH: 6.2, lastWatered: Date.now() - 20 * 60000 },
+      { id: 5, name: "Red Horse", soilMoisture: 48, soilPH: 6.7, lastWatered: Date.now() - 15 * 60000 },
+    ];
+
+    const plantsGrid = document.getElementById("plantsGrid");
+
+    // Helper: format minutes since last watered
+    function minutesSince(timestamp) {
+      const diffMs = Date.now() - timestamp;
+      return Math.floor(diffMs / 60000);
+    }
+
+    // Render all plants
+    function renderPlants() {
+      plantsGrid.innerHTML = "";
+      plants.forEach(plant => {
+        const card = document.createElement("div");
+        card.className = "plant-card";
+        card.setAttribute("aria-label", `${plant.name} plant status`);
+
+        card.innerHTML = `
+          <h2>${plant.name}</h2>
+          <p class="plant-info">Soil Moisture: <strong>${plant.soilMoisture.toFixed(0)}%</strong></p>
+          <p class="plant-info">Soil pH: <strong>${plant.soilPH.toFixed(1)}</strong></p>
+          <p class="plant-info">Last Watered: <strong>${minutesSince(plant.lastWatered)}</strong> minutes ago</p>
+          <button class="water-btn" aria-label="Water ${plant.name} now" data-id="${plant.id}">💦 Water Now</button>
+        `;
+
+        plantsGrid.appendChild(card);
+      });
+
+      // Attach event listeners to buttons
+      document.querySelectorAll(".water-btn").forEach(button => {
+        button.addEventListener("click", () => {
+          const id = parseInt(button.getAttribute("data-id"));
+          waterPlant(id);
+        });
+      });
+    }
+
+    // Water a plant: increase soil moisture, update last watered, adjust pH slightly
+    function waterPlant(id) {
+      const plant = plants.find(p => p.id === id);
+      if (!plant) return;
+
+      // Increase soil moisture by 15%, max 100%
+      plant.soilMoisture = Math.min(plant.soilMoisture + 15, 100);
+      // Update last watered timestamp
+      plant.lastWatered = Date.now();
+      // Slightly adjust pH randomly +/- 0.1 but keep in 5.5 - 7.5 range
+      const phChange = (Math.random() * 0.2) - 0.1;
+      plant.soilPH = Math.min(Math.max(plant.soilPH + phChange, 5.5), 7.5);
+      renderPlants();
+    }
+    // Update minutes since last watered every minute
+    setInterval(() => {
+      renderPlants();
+    }, 60000);
+    // Initial render
+    renderPlants();
+  </script>
+</body>
+</html>
