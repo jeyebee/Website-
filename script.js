@@ -1,175 +1,120 @@
-body {
-  margin: 0;
-  font-family: "Segoe UI", Tahoma, sans-serif;
-  background: #f7fafc;
-  color: #2d3748;
+let lastIrrigationTime = null;
+let autoRefreshInterval = null;
+
+function simulate() {
+  // Simulate sensor data
+  let soil = Math.floor(Math.random() * 100);
+  let rain = Math.random() > 0.6 ? "Yes" : "No";
+  let temp = (20 + Math.random() * 15).toFixed(1); // 20–35 °C
+  let humidity = Math.floor(30 + Math.random() * 50); // 30-80%
+  let ph = (5.5 + Math.random() * 2.5).toFixed(1); // 5.5 - 8.0
+
+  let decision = "";
+  let condition = "";
+  let status = "";
+  let statusClass = "";
+
+  // Decision logic with pH and humidity consideration
+  if (soil < 40 && rain === "No") {
+    if (ph < 6.0) {
+      decision = "Irrigation & Soil Amendment Needed ✅";
+      condition = "Soil is dry, acidic pH, no rain expected.";
+      status = "Watering & pH Adjustment Recommended";
+      statusClass = "status-watering";
+    } else if (ph > 7.5) {
+      decision = "Irrigation & Soil Amendment Needed ✅";
+      condition = "Soil is dry, alkaline pH, no rain expected.";
+      status = "Watering & pH Adjustment Recommended";
+      statusClass = "status-watering";
+    } else {
+      decision = "Irrigation Needed ✅";
+      condition = "Soil is dry, no rain coming.";
+      status = "Watering Recommended";
+      statusClass = "status-watering";
+    }
+    lastIrrigationTime = new Date();
+  } else if (soil < 40 && rain === "Yes") {
+    decision = "Wait 🌧️";
+    condition = "Soil dry but rain expected.";
+    status = "Standby";
+    statusClass = "status-standby";
+  } else if (soil >= 40 && soil <= 70) {
+    if (humidity < 40) {
+      decision = "Monitor Closely 👀";
+      condition = "Good soil moisture but low humidity.";
+      status = "No Irrigation Needed";
+      statusClass = "status-optimal";
+    } else {
+      decision = "Optimal 👍";
+      condition = "Good soil and humidity conditions.";
+      status = "No Irrigation Needed";
+      statusClass = "status-optimal";
+    }
+  } else {
+    decision = "Too Wet 🚫";
+    condition = "Overwatered soil.";
+    status = "No Irrigation Needed";
+    statusClass = "status-too-wet";
+  }
+
+  // Update DOM elements
+  document.getElementById("moisture").innerText = soil;
+  document.getElementById("rain").innerText = rain;
+  document.getElementById("temp").innerText = temp;
+  document.getElementById("humidity").innerText = humidity;
+  document.getElementById("ph").innerText = ph;
+  document.getElementById("decision").innerText = decision;
+  document.getElementById("condition").innerText = condition;
+  document.getElementById("status").innerText = status;
+
+  // Update last irrigation time display
+  document.getElementById("last-irrigation").innerText = lastIrrigationTime
+    ? lastIrrigationTime.toLocaleString()
+    : "Never";
+
+  // Update card background colors based on status
+  const statusCard = document.getElementById("status-card");
+  statusCard.className = "card " + statusClass;
 }
 
-header {
-  text-align: center;
-  padding: 2rem;
-  background: linear-gradient(135deg, #2a9d8f, #264653);
-  color: white;
+// Auto-refresh toggle handler
+document.getElementById("auto-refresh").addEventListener("change", function () {
+  if (this.checked) {
+    simulate();
+    autoRefreshInterval = setInterval(simulate, 10000);
+  } else {
+    clearInterval(autoRefreshInterval);
+  }
+});
+
+// Initial load
+simulate();
+
+// Existing simulate() function here...
+
+// Dark mode toggle logic
+const darkModeToggle = document.getElementById("dark-mode-toggle");
+
+function setDarkMode(enabled) {
+  if (enabled) {
+    document.body.classList.add("dark-mode");
+    localStorage.setItem("darkMode", "enabled");
+  } else {
+    document.body.classList.remove("dark-mode");
+    localStorage.setItem("darkMode", "disabled");
+  }
 }
 
-h1 {
-  margin-bottom: 0.5rem;
-}
+// Load saved preference on page load
+window.addEventListener("DOMContentLoaded", () => {
+  const darkModeSetting = localStorage.getItem("darkMode");
+  if (darkModeSetting === "enabled") {
+    darkModeToggle.checked = true;
+    setDarkMode(true);
+  }
+});
 
-main {
-  max-width: 1000px;
-  margin: auto;
-  padding: 2rem;
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1.5rem;
-}
-
-.card {
-  background: white;
-  border-radius: 12px;
-  padding: 1.5rem;
-  text-align: center;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-  transition: background-color 0.3s ease;
-}
-
-.card h2 {
-  margin-bottom: 0.8rem;
-  color: #2a9d8f;
-}
-
-.analysis {
-  text-align: left;
-}
-
-button {
-  margin-top: 2rem;
-  padding: 12px 24px;
-  background: #2a9d8f;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 1rem;
-}
-
-button:hover {
-  background: #21867a;
-}
-
-.center {
-  text-align: center;
-  margin-top: 1rem;
-}
-
-footer {
-  text-align: center;
-  padding: 1rem;
-  background: #e6fffa;
-  margin-top: 2rem;
-  font-size: 0.9rem;
-}
-
-/* Status colors */
-.status-watering {
-  background-color: #d1fae5; /* light green */
-}
-
-.status-standby {
-  background-color: #fef3c7; /* light yellow */
-}
-
-.status-optimal {
-  background-color: #dbeafe; /* light blue */
-}
-
-.status-too-wet {
-  background-color: #fee2e2; /* light red */
-}
-body.dark-mode {
-  background: #121212;
-  color: #e0e0e0;
-}
-
-body.dark-mode header {
-  background: linear-gradient(135deg, #0f766e, #1e293b);
-  color: #a5f3fc;
-}
-
-body.dark-mode .card {
-  background: #1e293b;
-  box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
-  color: #e0e0e0;
-}
-
-body.dark-mode .card h2 {
-  color: #38bdf8;
-}
-
-body.dark-mode .analysis {
-  color: #cbd5e1;
-}
-
-body.dark-mode button {
-  background: #0f766e;
-  color: #a5f3fc;
-}
-
-body.dark-mode button:hover {
-  background: #115e59;
-}
-
-body.dark-mode footer {
-  background: #0f766e;
-  color: #a5f3fc;
-}
-
-/* Toggle switch styles */
-.switch {
-  display: inline-flex;
-  align-items: center;
-  margin-left: 1rem;
-  cursor: pointer;
-  user-select: none;
-  font-weight: 600;
-  font-size: 1rem;
-  color: inherit;
-}
-
-.switch input {
-  display: none;
-}
-
-.slider {
-  position: relative;
-  width: 40px;
-  height: 20px;
-  background-color: #ccc;
-  border-radius: 34px;
-  margin-right: 0.5rem;
-  transition: background-color 0.3s;
-}
-
-.slider::before {
-  content: "";
-  position: absolute;
-  height: 16px;
-  width: 16px;
-  left: 2px;
-  bottom: 2px;
-  background-color: white;
-  border-radius: 50%;
-  transition: transform 0.3s;
-}
-
-input:checked + .slider {
-  background-color: #2a9d8f;
-}
-
-input:checked + .slider::before {
-  transform: translateX(20px);
-}
+// Listen for toggle changes
+darkModeToggle.addEventListener("change", () => {
+  setDarkMode(darkModeToggle.checked);
+});
