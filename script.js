@@ -1,10 +1,10 @@
 let lastIrrigationTime = null;
 let autoRefreshInterval = null;
 
-// Chart instances
+
 let pieChart, barChart, lineChart;
 
-// For line chart data history
+
 const soilMoistureHistory = [];
 const maxHistoryPoints = 10;
 
@@ -124,7 +124,7 @@ function simulate() {
   let status = "";
   let statusClass = "";
 
-  // Decision logic with pH and humidity consideration
+
   if (soil < 40 && rain === "No") {
     if (ph < 6.0) {
       decision = "Irrigation & Soil Amendment Needed âœ…";
@@ -167,7 +167,7 @@ function simulate() {
     statusClass = "status-too-wet";
   }
 
-  // Update DOM elements
+
   document.getElementById("moisture").innerText = soil;
   document.getElementById("rain").innerText = rain;
   document.getElementById("temp").innerText = temp;
@@ -177,20 +177,20 @@ function simulate() {
   document.getElementById("condition").innerText = condition;
   document.getElementById("status").innerText = status;
 
-  // Update last irrigation time display
+ 
   document.getElementById("last-irrigation").innerText = lastIrrigationTime
     ? lastIrrigationTime.toLocaleString()
     : "Never";
 
-  // Update card background colors based on status
+
   const statusCard = document.getElementById("status-card");
   statusCard.className = "card " + statusClass;
 
-  // Update charts
+
   updateCharts(soil, temp, humidity, ph);
 }
 
-// Auto-refresh toggle handler
+
 document.getElementById("auto-refresh").addEventListener("change", function () {
   if (this.checked) {
     simulate();
@@ -200,7 +200,6 @@ document.getElementById("auto-refresh").addEventListener("change", function () {
   }
 });
 
-// Dark mode toggle logic
 const darkModeToggle = document.getElementById("dark-mode-toggle");
 function setDarkMode(enabled) {
   if (enabled) {
@@ -212,7 +211,6 @@ function setDarkMode(enabled) {
   }
 }
 
-// Load saved preference and initialize charts on page load
 window.addEventListener("DOMContentLoaded", () => {
   const darkModeSetting = localStorage.getItem("darkMode");
   if (darkModeSetting === "enabled") {
@@ -223,7 +221,6 @@ window.addEventListener("DOMContentLoaded", () => {
   simulate();
 });
 
-// Listen for dark mode toggle changes
 darkModeToggle.addEventListener("change", () => {
   setDarkMode(darkModeToggle.checked);
 });
