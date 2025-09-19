@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Irrigation System - Plant Monitor</title>
+  <title>Irrigation System</title>
   <link rel="stylesheet" href="style.css" />
   <style>
-    /* Menu bar styles consistent with index.html */
+
     .menu-bar {
       margin-top: 1rem;
       background-color: rgba(42, 157, 143, 0.85);
@@ -88,7 +88,7 @@
       background: #21867a;
     }
 
-    /* Dark mode overrides */
+   
     body.dark-mode .plant-card {
       background: #1e293b;
       box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
@@ -122,12 +122,12 @@
 
   <main>
     <div class="plants-grid" id="plantsGrid">
-      <!-- Plant cards will be generated here -->
+    
     </div>
   </main>
 
   <script>
-    // Plant data array
+    
     const plants = [
       { id: 1, name: "Tomato", soilMoisture: 50, soilPH: 6.5, lastWatered: Date.now() - 30 * 60000 },
       { id: 2, name: "Lettuce", soilMoisture: 45, soilPH: 6.8, lastWatered: Date.now() - 45 * 60000 },
@@ -138,13 +138,13 @@
 
     const plantsGrid = document.getElementById("plantsGrid");
 
-    // Helper: format minutes since last watered
+   
     function minutesSince(timestamp) {
       const diffMs = Date.now() - timestamp;
       return Math.floor(diffMs / 60000);
     }
 
-    // Render all plants
+  
     function renderPlants() {
       plantsGrid.innerHTML = "";
       plants.forEach(plant => {
@@ -163,7 +163,7 @@
         plantsGrid.appendChild(card);
       });
 
-      // Attach event listeners to buttons
+      
       document.querySelectorAll(".water-btn").forEach(button => {
         button.addEventListener("click", () => {
           const id = parseInt(button.getAttribute("data-id"));
@@ -172,25 +172,24 @@
       });
     }
 
-    // Water a plant: increase soil moisture, update last watered, adjust pH slightly
+
     function waterPlant(id) {
       const plant = plants.find(p => p.id === id);
       if (!plant) return;
 
-      // Increase soil moisture by 15%, max 100%
       plant.soilMoisture = Math.min(plant.soilMoisture + 15, 100);
-      // Update last watered timestamp
+     
       plant.lastWatered = Date.now();
-      // Slightly adjust pH randomly +/- 0.1 but keep in 5.5 - 7.5 range
+    
       const phChange = (Math.random() * 0.2) - 0.1;
       plant.soilPH = Math.min(Math.max(plant.soilPH + phChange, 5.5), 7.5);
       renderPlants();
     }
-    // Update minutes since last watered every minute
+  
     setInterval(() => {
       renderPlants();
     }, 60000);
-    // Initial render
+  
     renderPlants();
   </script>
 </body>
