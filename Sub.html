@@ -6,39 +6,12 @@
   <title>Irrigation System</title>
   <link rel="stylesheet" href="style.css" />
   <style>
-
-    .menu-bar {
-      margin-top: 1rem;
-      background-color: rgba(42, 157, 143, 0.85);
-      border-radius: 8px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    }
-    .menu-bar ul {
-      list-style: none;
-      margin: 0;
-      padding: 0.5rem 1rem;
-      display: flex;
-      justify-content: center;
-      gap: 2rem;
-    }
-    .menu-bar ul li a {
-      color: white;
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 1rem;
-      padding: 0.5rem 0;
-      transition: color 0.3s ease;
-    }
-    .menu-bar ul li a:hover,
-    .menu-bar ul li a:focus {
-      color: #a5f3fc;
-      outline: none;
-    }
-
+    /* Keep your existing Sub.html styles here */
     main {
       max-width: 900px;
       margin: 2rem auto;
       padding: 0 1rem;
+      padding-top: 70px; /* for fixed nav */
     }
 
     h1 {
@@ -88,7 +61,6 @@
       background: #21867a;
     }
 
-   
     body.dark-mode .plant-card {
       background: #1e293b;
       box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
@@ -107,27 +79,153 @@
     body.dark-mode .water-btn:hover {
       background: #115e59;
     }
-    </style>
+
+    /* Dropdown menu styles (same as index.html) */
+    .top-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(42, 157, 143, 0.95);
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      padding: 0.5rem 1rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      z-index: 1000;
+      height: 60px;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+    }
+
+    #menu-btn {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: white;
+      cursor: pointer;
+      padding: 0.5rem;
+      border-radius: 4px;
+      transition: background-color 0.3s;
+    }
+
+    #menu-btn:hover,
+    #menu-btn:focus {
+      background-color: rgba(255, 255, 255, 0.2);
+      outline: none;
+    }
+
+    .dropdown {
+      display: none;
+      position: absolute;
+      top: 60px;
+      left: 1rem;
+      background-color: rgba(42, 157, 143, 0.95);
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      padding: 1rem;
+      min-width: 180px;
+      flex-direction: column;
+      gap: 1rem;
+      z-index: 1001;
+    }
+
+    .dropdown.show {
+      display: flex;
+    }
+
+    .dropdown a {
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1rem;
+      padding: 0.3rem 0;
+      border-radius: 4px;
+      transition: background-color 0.3s;
+    }
+
+    .dropdown a:hover,
+    .dropdown a:focus {
+      background-color: rgba(255, 255, 255, 0.2);
+      outline: none;
+    }
+
+    .dropdown a.active {
+      text-decoration: underline;
+    }
+
+    .switch.menu-dark-mode {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 1rem;
+      color: white;
+      user-select: none;
+      gap: 0.5rem;
+    }
+
+    .switch.menu-dark-mode input {
+      display: none;
+    }
+
+    .switch.menu-dark-mode .slider {
+      position: relative;
+      width: 40px;
+      height: 20px;
+      background-color: #ccc;
+      border-radius: 34px;
+      transition: background-color 0.3s;
+    }
+
+    .switch.menu-dark-mode .slider::before {
+      content: "";
+      position: absolute;
+      height: 16px;
+      width: 16px;
+      left: 2px;
+      bottom: 2px;
+      background-color: white;
+      border-radius: 50%;
+      transition: transform 0.3s;
+    }
+
+    .switch.menu-dark-mode input:checked + .slider {
+      background-color: #2a9d8f;
+    }
+
+    .switch.menu-dark-mode input:checked + .slider::before {
+      transform: translateX(20px);
+    }
+  </style>
 </head>
 <body>
-  <header>
-    <h1>💧 Irrigation System Control</h1>
-    <nav class="menu-bar">
-      <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="Sub.html" aria-current="page">Irrigation System</a></li>
-      </ul>
+  <!-- Fixed Top Navigation Bar -->
+  <header class="top-nav">
+    <nav class="nav-left">
+      <button id="menu-btn" aria-label="Toggle navigation menu">☰</button>
+      <div id="menu-dropdown" class="dropdown">
+        <a href="index.html">Home</a>
+        <a href="Sub.html" class="active" aria-current="page">Irrigation System</a>
+        <label class="switch menu-dark-mode">
+          <input type="checkbox" id="dark-mode-toggle" />
+          <span class="slider round"></span>
+          Dark Mode
+        </label>
+      </div>
     </nav>
   </header>
 
   <main>
-    <div class="plants-grid" id="plantsGrid">
-    
-    </div>
+    <h1>💧 Irrigation System Control</h1>
+    <div class="plants-grid" id="plantsGrid"></div>
   </main>
 
   <script>
-    
+    // Plant data and rendering (your existing code)
     const plants = [
       { id: 1, name: "Tomato", soilMoisture: 50, soilPH: 6.5, lastWatered: Date.now() - 30 * 60000 },
       { id: 2, name: "Lettuce", soilMoisture: 45, soilPH: 6.8, lastWatered: Date.now() - 45 * 60000 },
@@ -138,13 +236,11 @@
 
     const plantsGrid = document.getElementById("plantsGrid");
 
-   
     function minutesSince(timestamp) {
       const diffMs = Date.now() - timestamp;
       return Math.floor(diffMs / 60000);
     }
 
-  
     function renderPlants() {
       plantsGrid.innerHTML = "";
       plants.forEach(plant => {
@@ -163,7 +259,6 @@
         plantsGrid.appendChild(card);
       });
 
-      
       document.querySelectorAll(".water-btn").forEach(button => {
         button.addEventListener("click", () => {
           const id = parseInt(button.getAttribute("data-id"));
@@ -172,25 +267,62 @@
       });
     }
 
-
     function waterPlant(id) {
       const plant = plants.find(p => p.id === id);
       if (!plant) return;
 
       plant.soilMoisture = Math.min(plant.soilMoisture + 15, 100);
-     
       plant.lastWatered = Date.now();
-    
       const phChange = (Math.random() * 0.2) - 0.1;
       plant.soilPH = Math.min(Math.max(plant.soilPH + phChange, 5.5), 7.5);
       renderPlants();
     }
-  
+
     setInterval(() => {
       renderPlants();
     }, 60000);
-  
+
     renderPlants();
+
+    // Hamburger Menu Toggle
+    const menuBtn = document.getElementById('menu-btn');
+    const menuDropdown = document.getElementById('menu-dropdown');
+
+    menuBtn.addEventListener('click', () => {
+      menuDropdown.classList.toggle('show');
+    });
+
+    // Close menu if clicking outside
+    document.addEventListener('click', (e) => {
+      if (!menuBtn.contains(e.target) && !menuDropdown.contains(e.target)) {
+        menuDropdown.classList.remove('show');
+      }
+    });
+
+    // Dark Mode Handling
+    const darkModeToggle = document.getElementById("dark-mode-toggle");
+    function setDarkMode(enabled) {
+      if (enabled) {
+        document.body.classList.add("dark-mode");
+        localStorage.setItem("darkMode", "enabled");
+      } else {
+        document.body.classList.remove("dark-mode");
+        localStorage.setItem("darkMode", "disabled");
+      }
+    }
+
+    // Load dark mode on page load
+    window.addEventListener("DOMContentLoaded", () => {
+      const darkModeSetting = localStorage.getItem("darkMode");
+      if (darkModeSetting === "enabled") {
+        darkModeToggle.checked = true;
+        setDarkMode(true);
+      }
+    });
+
+    darkModeToggle.addEventListener("change", () => {
+      setDarkMode(darkModeToggle.checked);
+    });
   </script>
 </body>
 </html>
