@@ -106,22 +106,23 @@
 
   <script src="script.js"></script>
   <script>
-    // Hamburger Menu Toggle
+    // Hamburger Menu Toggle (FIXED: Added stopPropagation to prevent bubbling)
     const menuBtn = document.getElementById('menu-btn');
     const menuDropdown = document.getElementById('menu-dropdown');
 
-    menuBtn.addEventListener('click', () => {
+    menuBtn.addEventListener('click', (e) => {
+      e.stopPropagation(); // Prevent event from bubbling to document (fixes immediate close)
       menuDropdown.classList.toggle('show');
     });
 
-    // Close menu if clicking outside
+    // Close menu if clicking outside (simplified: only checks dropdown, as button is isolated)
     document.addEventListener('click', (e) => {
-      if (!menuBtn.contains(e.target) && !menuDropdown.contains(e.target)) {
+      if (!menuDropdown.contains(e.target)) {
         menuDropdown.classList.remove('show');
       }
     });
 
-    // Dark Mode Handling
+    // Dark Mode Handling (unchanged, but consolidated here for clarity)
     const darkModeToggle = document.getElementById("dark-mode-toggle");
     function setDarkMode(enabled) {
       if (enabled) {
