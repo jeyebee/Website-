@@ -1,9 +1,7 @@
 let lastIrrigationTime = null;
 let autoRefreshInterval = null;
 
-
 let pieChart, barChart, lineChart;
-
 
 const soilMoistureHistory = [];
 const maxHistoryPoints = 10;
@@ -34,7 +32,7 @@ function createCharts() {
   barChart = new Chart(barCtx, {
     type: "bar",
     data: {
-      labels: ["Temperature (Â°C)", "Humidity (%)", "Soil pH"],
+      labels: ["Temperature (°C)", "Humidity (%)", "Soil pH"],
       datasets: [{
         label: "Current Values",
         data: [0, 0, 0],
@@ -51,7 +49,8 @@ function createCharts() {
       },
     },
   });
-lineChart = new Chart(lineCtx, {
+
+  lineChart = new Chart(lineCtx, {
     type: "line",
     data: {
       labels: [],
@@ -115,7 +114,7 @@ function simulate() {
   // Simulate sensor data
   let soil = Math.floor(Math.random() * 100);
   let rain = Math.random() > 0.6 ? "Yes" : "No";
-  let temp = +(20 + Math.random() * 15).toFixed(1); // 20â€“35 Â°C
+  let temp = +(20 + Math.random() * 15).toFixed(1); // 20–35 °C
   let humidity = Math.floor(30 + Math.random() * 50); // 30-80%
   let ph = +(5.5 + Math.random() * 2.5).toFixed(1); // 5.5 - 8.0
 
@@ -124,49 +123,47 @@ function simulate() {
   let status = "";
   let statusClass = "";
 
-
   if (soil < 40 && rain === "No") {
     if (ph < 6.0) {
-      decision = "Irrigation & Soil Amendment Needed âœ…";
+      decision = "Irrigation & Soil Amendment Needed ✅";
       condition = "Soil is dry, acidic pH, no rain expected.";
       status = "Watering & pH Adjustment Recommended";
       statusClass = "status-watering";
     } else if (ph > 7.5) {
-      decision = "Irrigation & Soil Amendment Needed âœ…";
+      decision = "Irrigation & Soil Amendment Needed ✅";
       condition = "Soil is dry, alkaline pH, no rain expected.";
       status = "Watering & pH Adjustment Recommended";
       statusClass = "status-watering";
     } else {
-      decision = "Irrigation Needed âœ…";
+      decision = "Irrigation Needed ✅";
       condition = "Soil is dry, no rain coming.";
       status = "Watering Recommended";
       statusClass = "status-watering";
     }
     lastIrrigationTime = new Date();
   } else if (soil < 40 && rain === "Yes") {
-    decision = "Wait ðŸŒ§ï¸";
+    decision = "Wait 🌧️";
     condition = "Soil dry but rain expected.";
     status = "Standby";
     statusClass = "status-standby";
   } else if (soil >= 40 && soil <= 70) {
     if (humidity < 40) {
-      decision = "Monitor Closely ðŸ‘€";
+      decision = "Monitor Closely 👀";
       condition = "Good soil moisture but low humidity.";
       status = "No Irrigation Needed";
       statusClass = "status-optimal";
     } else {
-      decision = "Optimal ðŸ‘";
+      decision = "Optimal 👍";
       condition = "Good soil and humidity conditions.";
       status = "No Irrigation Needed";
       statusClass = "status-optimal";
     }
   } else {
-    decision = "Too Wet ðŸš«";
+    decision = "Too Wet 🚫";
     condition = "Overwatered soil.";
     status = "No Irrigation Needed";
     statusClass = "status-too-wet";
   }
-
 
   document.getElementById("moisture").innerText = soil;
   document.getElementById("rain").innerText = rain;
@@ -177,19 +174,15 @@ function simulate() {
   document.getElementById("condition").innerText = condition;
   document.getElementById("status").innerText = status;
 
- 
   document.getElementById("last-irrigation").innerText = lastIrrigationTime
     ? lastIrrigationTime.toLocaleString()
     : "Never";
 
-
   const statusCard = document.getElementById("status-card");
   statusCard.className = "card " + statusClass;
 
-
   updateCharts(soil, temp, humidity, ph);
 }
-
 
 document.getElementById("auto-refresh").addEventListener("change", function () {
   if (this.checked) {
@@ -200,6 +193,7 @@ document.getElementById("auto-refresh").addEventListener("change", function () {
   }
 });
 
+// Consolidated Dark Mode Handling (moved here to avoid duplication/conflicts)
 const darkModeToggle = document.getElementById("dark-mode-toggle");
 function setDarkMode(enabled) {
   if (enabled) {
@@ -211,6 +205,7 @@ function setDarkMode(enabled) {
   }
 }
 
+// Load dark mode on page load
 window.addEventListener("DOMContentLoaded", () => {
   const darkModeSetting = localStorage.getItem("darkMode");
   if (darkModeSetting === "enabled") {
