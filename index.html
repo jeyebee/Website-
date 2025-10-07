@@ -106,12 +106,12 @@
 
   <script src="script.js"></script>
   <script>
-    // Hamburger Menu Toggle (FIXED: Added stopPropagation to prevent bubbling)
+    // Hamburger Menu Toggle (FIXED: Added stopPropagation to prevent bubbling/timing issues)
     const menuBtn = document.getElementById('menu-btn');
     const menuDropdown = document.getElementById('menu-dropdown');
 
     menuBtn.addEventListener('click', (e) => {
-      e.stopPropagation(); // Prevent event from bubbling to document (fixes immediate close)
+      e.stopPropagation(); // Isolate button click - prevents bubbling to document listener
       menuDropdown.classList.toggle('show');
     });
 
@@ -122,30 +122,7 @@
       }
     });
 
-    // Dark Mode Handling (unchanged, but consolidated here for clarity)
-    const darkModeToggle = document.getElementById("dark-mode-toggle");
-    function setDarkMode(enabled) {
-      if (enabled) {
-        document.body.classList.add("dark-mode");
-        localStorage.setItem("darkMode", "enabled");
-      } else {
-        document.body.classList.remove("dark-mode");
-        localStorage.setItem("darkMode", "disabled");
-      }
-    }
-
-    // Load dark mode on page load
-    window.addEventListener("DOMContentLoaded", () => {
-      const darkModeSetting = localStorage.getItem("darkMode");
-      if (darkModeSetting === "enabled") {
-        darkModeToggle.checked = true;
-        setDarkMode(true);
-      }
-    });
-
-    darkModeToggle.addEventListener("change", () => {
-      setDarkMode(darkModeToggle.checked);
-    });
+    // Dark mode is now handled solely in script.js to avoid duplication/conflicts
   </script>
 </body>
 </html>
